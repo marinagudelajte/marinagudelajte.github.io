@@ -206,7 +206,7 @@ function splitLetters(heading) {
   window.addEventListener('resize', () => { tearAll(); onScroll(); });
   update();
 
-  // Arriving from a case page (index.html#works): land with the curtain already open.
+  // Arriving from a case page (home page #works): land with the curtain already open.
   if (location.hash === '#works') {
     window.addEventListener('load', () => {
       const y = section.getBoundingClientRect().top + window.scrollY - window.innerHeight * END;
@@ -230,7 +230,7 @@ function splitLetters(heading) {
   ['about', 'contact'].forEach((id) => {
     const target = document.getElementById(id);
     if (!target) return;
-    // arriving from a case page (index.html#about): land there at once as well
+    // arriving from a case page (home page #about): land there at once as well
     if (location.hash === `#${id}`) {
       window.addEventListener('load', () => target.scrollIntoView({ behavior: 'instant' }));
     }
