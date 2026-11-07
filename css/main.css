@@ -89,6 +89,7 @@
    illustration, above the raised foot. */
 .hero__sun--art { display: none; }
 @media (max-width: 959px) {
+  .hero__panel { padding-top: clamp(4.5rem, 10vw, 6.5rem); }   /* heading a little lower, more air above it */
   .hero__sun--panel { display: none; }
   .hero__sun--art {
     display: block;
@@ -752,7 +753,10 @@
 .about-window :focus-visible { outline-color: var(--teal); outline-offset: -3px; }
 
 /* The two panels share one grid cell, so the window keeps its height when switching */
-.js .about-panels { display: grid; }
+.js .about-panels { display: grid; position: relative; overflow: clip; }
+/* the window is as tall as the panel that is showing: the other one leaves the flow
+   (js/site.js eases the window's height between the two) */
+.js .about-panel:not(.is-active) { position: absolute; inset: 0 0 auto 0; }
 .about-panel {
   display: grid;
   gap: var(--space-5);
@@ -766,7 +770,6 @@
 }
 .about-panel--night h3 { color: var(--white); }
 /* the night text starts at the same height as the day text, so it is seen at once on switching */
-.about-panel--night { align-content: start; }
 .about-panel--night .about-panel__text { align-self: start; }
 .js .about-panel {
   grid-area: 1 / 1;

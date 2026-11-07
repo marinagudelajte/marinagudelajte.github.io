@@ -257,11 +257,23 @@ function splitLetters(heading) {
   const modes = Array.from(win.querySelectorAll('.about-mode'));
   const panels = { day: win.querySelector('.about-panel--day'), night: win.querySelector('.about-panel--night') };
 
+  const box = win.querySelector('.about-panels');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let resize = null;
+
   modes.forEach((button) => button.addEventListener('click', () => {
     const mode = button.dataset.mode;
+    if (win.dataset.mode === mode) return;
+    const from = box.offsetHeight;
     win.dataset.mode = mode;
     modes.forEach((b) => b.setAttribute('aria-pressed', b === button));
     Object.entries(panels).forEach(([name, panel]) => panel.classList.toggle('is-active', name === mode));
+    // The window takes the height of the panel now showing; ease between the two heights.
+    // A one-off change the visitor asked for, so a height animation is fine here.
+    if (resize) resize.cancel();
+    const to = box.offsetHeight;
+    if (reduce || from === to || !box.animate) return;
+    resize = box.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: 500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
   }));
 })();
 
