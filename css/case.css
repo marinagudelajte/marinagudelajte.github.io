@@ -1,0 +1,526 @@
+/* ==========================================================================
+   Case pages (work/*.html): one shared template.
+   Loaded after base.css and main.css (header, footer, seal come from main.css).
+   ========================================================================== */
+
+.case { --case-gap: clamp(3.5rem, 7vw, 6.5rem); }
+
+/* ---------- Head: a slim project panel with centred text over a ridge of clouds ---------- */
+.case-head { padding-bottom: var(--case-gap); }
+.case-head__panel {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: flex;
+  justify-content: center;
+  padding: clamp(3.5rem, 5vw, 4.5rem) clamp(1.25rem, 5vw, 6rem);
+  /* the project colour, lightened with the page colour */
+  background: color-mix(in srgb, var(--case-tint, var(--sky)) var(--head-mix, 50%), var(--page));
+  border-radius: clamp(24px, 3vw, 40px);
+}
+.case-head__text {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 46rem;
+  text-align: center;
+}
+.case-head__text h1 {
+  margin: 0 0 var(--space-4);
+  font-size: clamp(2.75rem, 1.6rem + 5vw, 5.5rem);
+}
+.case-head__lead {
+  max-width: 44ch;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  font-weight: 400;
+  line-height: 1.5;
+}
+.case-head__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+.case-head__chips li {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--tint);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.2;
+  rotate: var(--tilt);
+  animation: pop 500ms var(--ease-out) var(--d, 500ms) backwards;
+}
+
+.case-head__seal,
+.case-head__moons { z-index: 2; animation: pop 600ms var(--ease-out) 700ms backwards; }
+.case-head__seal {
+  top: clamp(0.75rem, 3vw, 2.5rem);
+  right: clamp(0.75rem, 6vw, 7rem);
+  width: clamp(64px, 11vw, 170px);
+}
+.case-head__moons {
+  position: absolute;
+  top: clamp(0.75rem, 3vw, 2.5rem);
+  right: clamp(0.75rem, 6vw, 7rem);
+  width: clamp(64px, 11vw, 170px);
+  rotate: 14deg;
+}
+.case-head__star {
+  position: absolute;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  fill: var(--navy);
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+.case-head__star--1 { top: 20%; left: 9%; width: 24px; height: 24px; }
+.case-head__star--2 { bottom: 22%; right: 8%; fill: var(--teal); animation-delay: -1.2s; }
+.case-head__star--3 { top: 42%; left: 15%; width: 14px; height: 14px; fill: var(--white); animation-delay: -2.4s; }
+
+/* hand-drawn stroke beside the text */
+.case-head__stroke {
+  position: absolute;
+  z-index: 2;
+  left: 6%;
+  bottom: 14%;
+  width: clamp(84px, 12vw, 184px);
+  rotate: -8deg;
+}
+
+/* narrow screens: decoration moves into the free strips above and below the text */
+@media (max-width: 859px) {
+  .case-head__star--1 { top: 1.25rem; left: 1.25rem; width: 18px; height: 18px; }
+  .case-head__star--2 { bottom: 1.25rem; right: 1.5rem; }
+  .case-head__star--3 { top: 1.75rem; left: 28%; }
+  .case-head__stroke { left: 1rem; bottom: 0.875rem; rotate: -4deg; }
+}
+/* phones and tablets: the seal and moons get their own strip above the title */
+@media (max-width: 859px) {
+  .case-head__panel { padding-top: 5.25rem; }
+  .case-head__seal,
+  .case-head__moons { top: 0.5rem; right: 0.75rem; width: 68px; }
+}
+/* small laptops: the title gets wide, so the decoration stays closer to the edges */
+@media (min-width: 860px) and (max-width: 1199px) {
+  .case-head__seal,
+  .case-head__moons { top: 0.75rem; right: 1.25rem; width: 96px; }
+  .case-head__star--3 { left: 6%; }
+}
+
+/* entrance: letters slide up from under a mask, the rest rises */
+.case-head__text h1 .word {
+  display: inline-block;
+  overflow: clip;
+  padding: 0 0.08em 0.14em;
+  margin: 0 -0.08em -0.14em;
+  vertical-align: top;
+}
+.case-head__text h1 .char {
+  display: inline-block;
+  animation: char-up 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 28ms);
+}
+.case-head__lead { animation: rise 900ms var(--ease-out) 350ms backwards; }
+
+/* ---------- Intro: one flowing text + a quiet column of project data ---------- */
+.case-intro {
+  display: grid;
+  gap: var(--space-6);
+  padding-bottom: var(--case-gap);
+}
+.case-intro__text {
+  display: grid;
+  gap: var(--space-4);
+}
+.case-intro__text p { max-width: 60ch; }
+
+.case-meta {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  margin: 0;
+}
+.case-meta > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.case-meta dt {
+  flex: 0 0 100%;
+  font-size: var(--text-small);
+  font-weight: 400;
+  color: var(--muted);
+}
+.case-meta dd {
+  margin: 0;
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--sky-soft);
+  font-size: var(--text-small);
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+/* ---------- Picture grid ---------- */
+.case-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.case-shot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: clip;
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--case-tint, var(--sky)) 55%, var(--white));
+}
+.case-shot--cover { background: var(--case-tint, var(--sky)); }
+.case-shot:has(> img:first-child, > video) { background: none; }
+.case-shot > img:first-child,
+.case-shot > video { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Scrolling tile: a long page in a little browser window ----------
+   The wheel scrolls the page until the visitor clicks into the window, so the tile never
+   traps the page scroll; moving the mouse away releases it (js/site.js). Touch screens
+   show the whole picture without inner scrolling, for the same reason. */
+.case-shot--scroll {
+  aspect-ratio: auto;
+  padding: clamp(1rem, 4vw, 3.5rem);
+}
+.case-scroll {
+  position: relative;
+  width: min(100%, 900px);
+  overflow: clip;
+  border-radius: 14px;
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+}
+.case-scroll__bar {
+  display: flex;
+  gap: 6px;
+  padding: 0.75rem 1rem;
+  background: var(--sky-soft);
+}
+.case-scroll__bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--pink); }
+.case-scroll__bar i:nth-child(2) { background: var(--gold); }
+.case-scroll__bar i:nth-child(3) { background: var(--teal); }
+.case-scroll__view {
+  height: min(66vh, 600px);
+  overflow: hidden;
+  scrollbar-color: var(--muted) transparent;
+  scrollbar-width: thin;
+}
+.case-scroll__view:focus { overflow-y: auto; outline: none; }
+.case-scroll__view:focus-visible { outline: 2px solid var(--burgundy); outline-offset: -4px; }
+.case-scroll__view img { display: block; width: 100%; height: auto; }
+.case-scroll__hint {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--navy);
+  color: var(--white);
+  font-size: var(--text-small);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  transition: opacity var(--dur-fast) var(--ease-out);
+  pointer-events: none;
+}
+.case-scroll__view:focus ~ .case-scroll__hint { opacity: 0; }
+@media (hover: none), (max-width: 719px) {
+  .case-scroll__view,
+  .case-scroll__view:focus { height: auto; overflow: visible; }
+  .case-scroll__hint { display: none; }
+}
+
+/* Real pictures: --natural keeps their own proportions, --fit shows the whole picture
+   with air on the tile colour, .case-row makes two tiles the same height. */
+.case-shot--natural { aspect-ratio: auto; background: none; }
+.case-shot.case-shot--natural > img:first-child,
+.case-shot.case-shot--natural > video { height: auto; }
+.case-shot--natural > video { display: block; }
+.case-shot--fit { aspect-ratio: auto; padding: clamp(1rem, 3vw, 2.5rem); }
+.case-shot.case-shot--fit:has(> img) { background: color-mix(in srgb, var(--case-tint, var(--sky)) 55%, var(--white)); }
+.case-shot.case-shot--fit > img:first-child { height: auto; object-fit: contain; }
+.case-row {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.case-stack {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+  min-width: 0;
+}
+/* --contain: a small drawing centred on the tile colour; the tile's height comes from the row */
+.case-shot.case-shot--contain {
+  aspect-ratio: 4 / 3;
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.case-shot.case-shot--contain:has(> img) { background: color-mix(in srgb, var(--case-tint, var(--sky)) 55%, var(--white)); }
+.case-shot.case-shot--contain > img:first-child {
+  position: absolute;
+  inset: clamp(0.75rem, 1.5vw, 1.25rem);
+  width: calc(100% - 2 * clamp(0.75rem, 1.5vw, 1.25rem));
+  height: calc(100% - 2 * clamp(0.75rem, 1.5vw, 1.25rem));
+  object-fit: contain;
+}
+@media (min-width: 720px) {
+  .case-row { grid-template-columns: var(--cols, 1fr 1fr); }
+  .case-gallery .case-row > .case-shot { grid-column: auto; }
+  .case-stack--even { grid-auto-rows: 1fr; }
+  .case-stack--even .case-shot--contain { aspect-ratio: auto; }
+  /* the neighbouring tile sets the row height; the picture fills it up to the rounded corners */
+  .case-shot.case-shot--fill > video,
+  .case-shot.case-shot--fill > img:first-child {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* ---------- Endless strip: a wide picture slowly moving through the tile ----------
+   The track holds the picture twice and moves by exactly one picture, so the end of the loop
+   looks the same as its start. It stops under the mouse or keyboard focus. With reduced
+   motion it stands still and the visitor scrolls the single picture sideways. */
+.case-shot.case-marquee {
+  --marquee-height: clamp(18rem, 31vw, 27rem);
+  display: block;
+  aspect-ratio: auto;
+  padding-block: clamp(1.5rem, 4vw, 3.5rem);
+}
+.case-marquee__track {
+  --marquee-width: calc(var(--marquee-height) * var(--marquee-ratio));   /* --marquee-ratio on the tile or the track: the picture's width / height */
+  display: flex;
+  justify-self: start;
+  width: max-content;
+  animation: case-marquee var(--marquee-time, 70s) linear infinite;
+}
+.case-marquee__track img {
+  flex: none;
+  width: var(--marquee-width);
+  max-width: none;
+  height: var(--marquee-height);
+}
+/* two strips in one tile; the second one travels the other way */
+.case-marquee--rows {
+  display: grid;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.case-marquee__track--reverse { animation-direction: reverse; }
+.case-marquee:focus-visible .case-marquee__track { animation-play-state: paused; }
+@media (hover: hover) {
+  .case-marquee:hover .case-marquee__track { animation-play-state: paused; }
+}
+@keyframes case-marquee {
+  to { transform: translateX(calc(-1 * var(--marquee-width))); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .case-shot.case-marquee { overflow-x: auto; }
+  .case-marquee__track { animation: none; }
+  .case-marquee__track img + img { display: none; }
+}
+
+/* ---------- Click-through demo and slide stack (js/case-demo.js) ----------
+   A slide and its states are stacked pictures: at rest, pointer over the button, after the click.
+   Positions are percentages of the slide. */
+.case-shot.case-demo {
+  aspect-ratio: auto;
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+.demo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1400 / 838;
+  overflow: clip;
+  border-radius: 10px;
+}
+.demo__scene { position: absolute; inset: 0; opacity: 0; }
+.demo__scene.is-on { opacity: 1; }
+.demo img { position: absolute; display: block; max-width: none; }
+.demo__scene > img:first-child,
+.demo__hover,
+.demo__result { inset: 0; width: 100%; height: 100%; }
+.demo__hover,
+.demo__result { opacity: 0; }
+[data-click="reveal"] .demo__result { opacity: 1; clip-path: inset(0 0 100% 0); }   /* the tab panel unrolls downwards */
+.demo__tip { opacity: 0; transform-origin: 0% 50%; }       /* grows out of the icon on its left */
+.demo__flip { position: absolute; perspective: 900px; visibility: hidden; }   /* the clicked card, turning over */
+.demo__card { position: absolute; inset: 0; transform-style: preserve-3d; }
+.demo__card img { inset: 0; width: 100%; height: 100%; backface-visibility: hidden; }
+.demo__card img + img { transform: rotateY(180deg); }
+.demo__cursor,
+.demo__ripple {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.demo__cursor svg {
+  display: block;
+  width: clamp(14px, 2.4vw, 24px);
+  height: auto;
+  transform-origin: 2px 1px;      /* presses towards its tip */
+  filter: drop-shadow(0 1px 1.5px rgba(8, 8, 75, 0.35));
+}
+.demo__ripple span {
+  display: block;
+  width: clamp(28px, 4.4vw, 44px);
+  aspect-ratio: 1;
+  margin: calc(clamp(28px, 4.4vw, 44px) / -2) 0 0 calc(clamp(28px, 4.4vw, 44px) / -2);
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  opacity: 0;
+}
+/* reduced motion: one still, the opened tab */
+.demo.is-static [data-click="reveal"] .demo__result { clip-path: none; }
+.demo.is-static .demo__cursor,
+.demo.is-static .demo__ripple { display: none; }
+
+/* slides landing on top of each other, each with its own slight turn (--r) */
+.stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 760 / 427;
+}
+.stack__slide {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px rgba(8, 8, 75, 0.08);    /* a hairline, so white slides part from white slides */
+  transform: rotate(var(--r, 0deg));
+  opacity: 0;
+}
+.stack__slide:first-child { opacity: 1; }
+
+/* ---------- Scroll entrance: 50px rise + fade, the same as the hero text (js/site.js) ---------- */
+.case-reveal .case-shot,
+.case-reveal .case-results {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 900ms var(--ease-out), transform 900ms var(--ease-out);
+}
+.case-reveal .case-shot.is-in,
+.case-reveal .case-results.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Results: one big sentence ---------- */
+.case-results {
+  display: grid;
+  gap: var(--space-4);
+  padding-top: var(--case-gap);
+}
+.case-results h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+}
+.case-results__body {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-4);
+}
+.case-results__statement {
+  max-width: 24ch;
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.case-results__body > p:not(.case-results__statement) { max-width: 52ch; }
+
+/* ---------- Client sections (Illustration & Motion) ---------- */
+.case-client + .case-client { padding-top: var(--case-gap); }
+.case-client__head {
+  display: grid;
+  gap: var(--space-3) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+.case-client__head h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+}
+.case-client__about {
+  display: grid;
+  gap: var(--space-4);
+}
+.case-client__about p { max-width: 60ch; }
+.case-meta--row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+}
+
+.case-shot--wide { aspect-ratio: 16 / 9; }
+.case-shot--wide > img:first-child { position: absolute; inset: 0; }   /* the picture must not stretch the tile */
+.case-shot--banner { aspect-ratio: 2 / 1; }
+@media (min-width: 720px) { .case-shot--banner { aspect-ratio: 3 / 1; } }
+
+/* ---------- Next project: two lines, slim ---------- */
+.case-next {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: var(--space-4);
+  margin-block: var(--case-gap);
+  padding: var(--space-3) clamp(1.25rem, 3vw, 2rem);
+  border-radius: var(--radius-card);
+  background: var(--tint, var(--sky));
+  color: var(--navy);
+  text-decoration: none;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+}
+.case-next:hover { color: var(--navy); box-shadow: var(--shadow-card); }
+.case-next__label { grid-column: 1; font-size: var(--text-small); }
+.case-next__title {
+  grid-column: 1;
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  line-height: 1.2;
+}
+.case-next svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.case-next:hover svg { transform: translateX(6px); }
+
+@media (min-width: 720px) {
+  .case-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-shot { grid-column: 1 / -1; }
+  .case-results { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+}
+@media (min-width: 720px) {
+  .case-client__head { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+}
+@media (min-width: 860px) {
+  .case-intro {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+    gap: clamp(3rem, 8vw, 8rem);
+  }
+}
