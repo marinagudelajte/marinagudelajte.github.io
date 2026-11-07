@@ -85,6 +85,21 @@
   width: clamp(80px, 9vw, 150px);
   rotate: 180deg;
 }
+/* One column (phones, tablets): the heading has the cloud only; the half-moons move to the
+   illustration, above the raised foot. */
+.hero__sun--art { display: none; }
+@media (max-width: 959px) {
+  .hero__sun--panel { display: none; }
+  .hero__sun--art {
+    display: block;
+    z-index: 0;
+    top: 0;
+    right: 6%;
+    width: 15%;
+    rotate: -8deg;
+  }
+  .star--1 { left: 62%; }          /* clear of the half-moons */
+}
 
 .hero__cloud {
   position: absolute;
@@ -220,7 +235,7 @@
   .chip--illustration { top: 54%; }
   /* raise the paper so the figure sits on it */
   .hero__paper { transform: translateY(24%); }          /* bottom at 76% = mid-cell */
-  .hero__paper-back { transform: scaleX(-1) translateY(0) rotate(-2deg); }
+  .hero__paper-back { transform: scaleX(-1) translateY(12%) rotate(-2deg); }   /* low enough that its tilted corner reaches the card's edge */
 }
 
 @media (min-width: 960px) {
@@ -533,6 +548,7 @@
   flex-direction: column;
   gap: var(--space-3);
   padding: clamp(1.25rem, 3vw, 3rem);
+  padding-bottom: clamp(2.25rem, 6vw, 3rem);   /* phones: the text sits at the card's bottom edge, give it air */
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -749,6 +765,9 @@
   color: var(--sky-soft);
 }
 .about-panel--night h3 { color: var(--white); }
+/* the night text starts at the same height as the day text, so it is seen at once on switching */
+.about-panel--night { align-content: start; }
+.about-panel--night .about-panel__text { align-self: start; }
 .js .about-panel {
   grid-area: 1 / 1;
   opacity: 0;
